@@ -37,7 +37,7 @@ db.mongoose
 
 // routes
 app.get("/", (req, res) => {
-    res.json({ message: "Welcome to student-orginizer application." });
+    res.json({ message: "Welcome to student-organizer application." });
 });
 
 require('./app/routes/auth.routes')(app);
