@@ -44,8 +44,7 @@ isCurator = (req, res, next) => {
                     }
                 }
 
-                res.status(403).send({ message: "Require Curator Role!" });
-                return;
+                return res.status(403).send({ message: "Require Curator Role!" });
             }
         );
     });
@@ -75,8 +74,7 @@ isHeadman = (req, res, next) => {
                     }
                 }
 
-                res.status(403).send({ message: "Require Headman Role!" });
-                return;
+                return res.status(403).send({ message: "Require Headman Role!" });
             }
         );
     });

@@ -1,9 +1,9 @@
-const config = require("../config/auth.config");
-const User = require("../models/user.model");
-const Role = require("../models/role.model");
+const config = require('../config/auth.config');
+const User = require('../models/user.model');
+const Role = require('../models/role.model');
 
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
 exports.signup = (req, res) => {
     const user = new User({
@@ -30,7 +30,7 @@ exports.signup = (req, res) => {
             }
         );
     } else {
-        Role.findOne({ name: "user" }, (err, role) => {
+        Role.findOne({ name: 'student' }, (err, role) => {
             if (err) {
                 console.error(err);
                 res.status(500).send({ message: err });
@@ -55,14 +55,17 @@ exports.signup = (req, res) => {
         const authorities = user.authorities.map(role => `ROLE_${role.toUpperCase()}`);
 
         return res.status(201).send({
-            id: user._id,
-            name: user.name,
-            surname: user.surname,
-            faculty: user.faculty,
-            group: user.group,
-            email: user.email,
-            roles: authorities,
-            accessToken: token
+            message: '',
+            user: {
+                id: user._id,
+                name: user.name,
+                surname: user.surname,
+                faculty: user.faculty,
+                group: user.group,
+                email: user.email,
+                roles: authorities,
+                accessToken: token
+            }
         });
     });
 };
@@ -71,7 +74,7 @@ exports.signin = (req, res) => {
     User.findOne({
         email: req.body.email
     })
-        .populate("roles", "-__v")
+        .populate('roles', '-__v')
         .exec((err, user) => {
             if (err) {
                 res.status(500).send({ message: err });
@@ -79,7 +82,7 @@ exports.signin = (req, res) => {
             }
 
             if (!user) {
-                return res.status(404).send({ message: "User Not found." });
+                return res.status(404).send({ message: 'Невірний email або пароль!' });
             }
 
             const isPasswordValid = bcrypt.compareSync(
@@ -88,10 +91,7 @@ exports.signin = (req, res) => {
             );
 
             if (!isPasswordValid) {
-                return res.status(401).send({
-                    accessToken: null,
-                    message: "Invalid Password!"
-                });
+                return res.status(401).send({ message: 'Невірний email або пароль!' });
             }
 
             const token = jwt.sign({ id: user.id }, config.secret, {
@@ -101,14 +101,17 @@ exports.signin = (req, res) => {
             const authorities = user.roles.map(role => `ROLE_${role.name.toUpperCase()}`);
 
             res.status(200).send({
-                id: user._id,
-                name: user.name,
-                surname: user.surname,
-                faculty: user.faculty,
-                group: user.group,
-                email: user.email,
-                roles: authorities,
-                accessToken: token
-            });
+                message: 'User was successful logged in!',
+                user: {
+                    id: user._id,
+                    name: user.name,
+                    surname: user.surname,
+                    faculty: user.faculty,
+                    group: user.group,
+                    email: user.email,
+                    roles: authorities,
+                    accessToken: token
+                }
+                });
         });
 };
