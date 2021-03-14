@@ -50,19 +50,19 @@ app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
 });
 
-const facultyNames = require('./app/mocks/faculties.mock');
+const faculties = require('./app/mocks/faculties.mock');
 
 function initial() {
     Faculty.estimatedDocumentCount((err, count) => {
         if (!err && count === 0) {
-            facultyNames.forEach(facultyName => {
+            faculties.forEach(({ fullName, abbreviation }) => {
                 new Faculty({
-                    name: facultyName
+                    fullName, abbreviation
                 }).save(err => {
                     if (err) {
                         console.log('error', err);
                     }
-                    console.log(`added '${facultyName}' faculty`);
+                    console.log(`added '${fullName}' (${abbreviation}) faculty`);
                 });
             });
         }

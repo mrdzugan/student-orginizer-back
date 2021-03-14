@@ -5,7 +5,10 @@ const User = mongoose.model(
     new mongoose.Schema({
         name: String,
         surname: String,
-        faculty: String,
+        faculty: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Faculty"
+        },
         group: String,
         email: String,
         password: String,

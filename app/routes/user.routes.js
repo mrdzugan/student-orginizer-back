@@ -14,6 +14,8 @@ module.exports = function (app) {
 
     app.get("/api/test/user", [authJwt.verifyToken], controller.studentBoard);
 
+    app.get("/api/user/:id", [authJwt.verifyToken], controller.getUser);
+
     app.get(
         "/api/test/mod",
         [authJwt.verifyToken, authJwt.isHeadman],

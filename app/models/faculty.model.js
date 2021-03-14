@@ -3,13 +3,9 @@ const mongoose = require('mongoose');
 const Faculty = mongoose.model(
     'Faculty',
     new mongoose.Schema({
-        name: String,
-        groups: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Group'
-            }
-        ]
+        fullName: String,
+        abbreviation: String,
+        groups: [Object]
     })
 );
 
