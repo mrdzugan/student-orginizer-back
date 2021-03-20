@@ -20,9 +20,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const db = require('./app/models');
 const Role = db.role;
 const Faculty = db.faculty;
+const Group = db.group;
 
 db.mongoose
-    .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
+    .connect(`mongodb://${ dbConfig.HOST }:${ dbConfig.PORT }/${ dbConfig.DB }`, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     })
@@ -47,22 +48,45 @@ require('./app/routes/faculty.routes')(app);
 
 
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}.`);
+    console.log(`Server is running on port ${ PORT }.`);
 });
 
 const faculties = require('./app/mocks/faculties.mock');
+const groups = require('./app/mocks/groups.mock');
 
 function initial() {
     Faculty.estimatedDocumentCount((err, count) => {
         if (!err && count === 0) {
             faculties.forEach(({ fullName, abbreviation }) => {
-                new Faculty({
-                    fullName, abbreviation
-                }).save(err => {
+                const faculty = new Faculty({
+                    _id: new db.mongoose.Types.ObjectId(),
+                    fullName,
+                    abbreviation,
+                    groups: []
+                });
+
+                const groupsList = groups.filter(grp => grp.facultyAbbreviation === abbreviation);
+                groupsList.forEach(group => {
+                    const createdGroup = new Group({
+                        name: group.name,
+                        faculty: faculty._id,
+                        members: []
+                    });
+                    createdGroup.save(err => {
+                        if (err) {
+                            console.log('error', err);
+                        }
+
+                        console.log(`added '${ group.name }' group`);
+                    });
+                    faculty.groups.push(createdGroup);
+                });
+
+                faculty.save(err => {
                     if (err) {
                         console.log('error', err);
                     }
-                    console.log(`added '${fullName}' (${abbreviation}) faculty`);
+                    console.log(`added '${ fullName }' (${ abbreviation }) faculty`);
                 });
             });
         }

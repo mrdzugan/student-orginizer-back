@@ -5,7 +5,10 @@ const Faculty = mongoose.model(
     new mongoose.Schema({
         fullName: String,
         abbreviation: String,
-        groups: [Object]
+        groups: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Group'
+        }]
     })
 );
 

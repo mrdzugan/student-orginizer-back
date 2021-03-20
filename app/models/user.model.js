@@ -1,23 +1,21 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const User = mongoose.model(
-    "User",
+    'User',
     new mongoose.Schema({
         name: String,
         surname: String,
         faculty: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Faculty"
+            ref: 'Faculty'
         },
         group: String,
         email: String,
         password: String,
-        roles: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "Role"
-            }
-        ]
+        roles: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Role'
+        }]
     })
 );
 
