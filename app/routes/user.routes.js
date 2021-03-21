@@ -10,11 +10,11 @@ module.exports = function (app) {
         next();
     });
 
-    app.get("/api/test/all", controller.allAccess);
+    app.get("/api/user/:id", [authJwt.verifyToken], controller.getUser);
+
+    /*app.get("/api/test/all", controller.allAccess);
 
     app.get("/api/test/user", [authJwt.verifyToken], controller.studentBoard);
-
-    app.get("/api/user/:id", [authJwt.verifyToken], controller.getUser);
 
     app.get(
         "/api/test/mod",
@@ -26,5 +26,5 @@ module.exports = function (app) {
         "/api/test/admin",
         [authJwt.verifyToken, authJwt.isCurator],
         controller.curatorBoard
-    );
+    );*/
 };

@@ -80,7 +80,7 @@ exports.signin = (req, res) => {
     User.findOne({
         email: req.body.email
     })
-        .populate('roles')
+        .populate('faculty group roles')
         .exec((err, user) => {
             if (err) {
                 res.status(500).send({ message: err });

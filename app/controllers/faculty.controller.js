@@ -16,9 +16,9 @@ exports.getFaculties = (req, res) => {
 };
 
 exports.getFaculty = (req, res) => {
-    Faculty.findOne(
-        { _id: req.params.id },
-        (err, faculty) => {
+    Faculty.findOne({ _id: req.params.id })
+        .populate('groups')
+        .exec((err, faculty) => {
             if (err) {
                 console.error(err);
                 res.status(500).send({ message: err });

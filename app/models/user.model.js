@@ -9,7 +9,10 @@ const User = mongoose.model(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Faculty'
         },
-        group: String,
+        group: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Group'
+        },
         email: String,
         password: String,
         roles: [{
