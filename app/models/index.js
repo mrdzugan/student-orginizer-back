@@ -9,6 +9,7 @@ db.user = require('./user.model');
 db.role = require('./role.model');
 db.faculty = require('./faculty.model');
 db.group = require('./group.model');
+db.timetable = require('./timetable.model');
 
 db.ROLES = ['student', 'headman', 'curator'];
 
