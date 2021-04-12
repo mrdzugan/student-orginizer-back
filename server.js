@@ -1,7 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const dbConfig = require('./app/config/db.config');
+//const dbConfig = require('./app/config/db.config');
+
+require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -21,7 +23,8 @@ const db = require('./app/models');
 const Role = db.role;
 const Faculty = db.faculty;
 const Group = db.group;
-const mongoPath = process.env.MONGO_PATH || `mongodb://${ dbConfig.HOST }:${ dbConfig.PORT }/${ dbConfig.DB }`;
+//const localMongoPath = `mongodb://${ dbConfig.HOST }:${ dbConfig.PORT }/${ dbConfig.DB }`;
+const mongoPath = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@cluster0.r677w.mongodb.net/student_db`;
 
 db.mongoose
     .connect(mongoPath, {
