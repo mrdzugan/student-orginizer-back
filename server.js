@@ -21,9 +21,10 @@ const db = require('./app/models');
 const Role = db.role;
 const Faculty = db.faculty;
 const Group = db.group;
+const mongoPath = process.env.MONGO_PATH || `mongodb://${ dbConfig.HOST }:${ dbConfig.PORT }/${ dbConfig.DB }`;
 
 db.mongoose
-    .connect(`mongodb://${ dbConfig.HOST }:${ dbConfig.PORT }/${ dbConfig.DB }`, {
+    .connect(mongoPath, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useFindAndModify: false
