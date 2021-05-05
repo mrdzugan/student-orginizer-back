@@ -35,3 +35,24 @@ exports.getTimetable = (req, res) => {
             res.status(200).send({ timetable });
         });
 };
+
+exports.updateTimetable = (req, res) => {
+    Timetable.findOne({ _id: req.params.id })
+        .exec((err, timetable) => {
+            if (!timetable) {
+                return res.status(404).send({ data: { message: 'Timetable is not found' } });
+            }
+            console.log(timetable);
+            const newSchedule = req.body;
+            const weekType = req.body.weekType;
+            const dayIndex = timetable.schedule[weekType].findIndex(day => day.dayOfWeek === newSchedule.dayOfWeek);
+            delete newSchedule.weekType;
+            timetable.schedule[weekType][dayIndex] = newSchedule;
+            timetable.save((err, updatedTimetable) => {
+                if (err) {
+                    return res.status(400).send({ data: { message: err } });
+                }
+                res.status(200).send({ timetable: updatedTimetable });
+            });
+        });
+};

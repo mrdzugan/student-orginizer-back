@@ -14,7 +14,7 @@ module.exports = function (app) {
 
     app.get("/api/timetable/:id", [authJwt.verifyToken], controller.getTimetable);
 
-    //app.put("/api/timetable/:id", [authJwt.verifyToken], controller.editTimetable);
+    app.put("/api/timetable/:id", [authJwt.verifyToken], controller.updateTimetable);
 
     app.post("/api/timetable/create", [authJwt.verifyToken], controller.createTimetable);
 };
