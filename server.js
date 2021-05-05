@@ -49,9 +49,10 @@ app.get('/', (req, res) => {
 
 require('./app/routes/auth.routes')(app);
 require('./app/routes/user.routes')(app);
-require('./app/routes/faculty.routes')(app);
 require('./app/routes/group.routes')(app);
+require('./app/routes/faculty.routes')(app);
 require('./app/routes/timetable.routes')(app);
+require('./app/routes/advertisement.routes')(app);
 
 
 app.listen(PORT, () => {
