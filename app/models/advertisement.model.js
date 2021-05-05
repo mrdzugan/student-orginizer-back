@@ -9,6 +9,10 @@ const Advertisement = mongoose.model(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
         },
+        group: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Group'
+        }
     }, { timestamps: true })
 );
 

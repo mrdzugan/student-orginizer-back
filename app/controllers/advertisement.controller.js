@@ -3,17 +3,29 @@ const User = db.user;
 const Advertisement = db.advertisement;
 
 exports.getAdvertisements = (req, res) => {
-    Advertisement.find({})
-        .populate('user')
-        .exec((err, advertisements) => {
-                if (err) {
-                    console.error(err);
-                    res.status(500).send({ message: err });
-                    return;
+    User.findById(req.userId)
+        .populate('group')
+        .exec((err, user) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send({ message: err });
+            return;
+        }
+        Advertisement.find({})
+            .populate('user')
+            .exec((err, advertisements) => {
+                    if (err) {
+                        console.error(err);
+                        res.status(500).send({ message: err });
+                        return;
+                    }
+                    const filteredAdvertisements = advertisements.filter(advertisement => {
+                        return advertisement.group && advertisement.group.toString() === user.group._id.toString();
+                    });
+                    res.status(200).send(filteredAdvertisements);
                 }
-                res.status(200).send(advertisements);
-            }
-        );
+            );
+    });
 };
 
 exports.createAdvertisement = (req, res) => {
@@ -27,7 +39,8 @@ exports.createAdvertisement = (req, res) => {
         const advertisement = new Advertisement({
             title: req.body.title,
             description: req.body.description,
-            user: req.userId
+            user: req.userId,
+            group: req.body.group
         });
 
         advertisement.save((err, createdAdvertisement) => {
