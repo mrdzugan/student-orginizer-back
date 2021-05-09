@@ -20,7 +20,7 @@ exports.getAdvertisements = (req, res) => {
                         return;
                     }
                     const filteredAdvertisements = advertisements.filter(advertisement => {
-                        return advertisement.group && advertisement.group.toString() === user.group._id.toString();
+                        return advertisement.group && user.group && advertisement.group.toString() === user.group._id.toString();
                     });
                     res.status(200).send(filteredAdvertisements);
                 }
